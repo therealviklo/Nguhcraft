@@ -18,6 +18,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.tags.TagKey
+import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.item.*
 import net.minecraft.world.item.component.Consumable
@@ -27,6 +28,7 @@ import net.minecraft.world.item.equipment.ArmorMaterial
 import net.minecraft.world.item.equipment.ArmorType
 import net.minecraft.world.item.equipment.EquipmentAsset
 import net.minecraft.world.item.equipment.EquipmentAssets
+import net.minecraft.world.item.equipment.Equippable
 import net.minecraft.world.item.equipment.trim.TrimPattern
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
@@ -197,6 +199,30 @@ object NguhItems {
     )
 
     // =========================================================================
+    // Hotspot Glasses
+    // =========================================================================
+    val HOTSPOT_GLASSES_EQUIPMENT_ASSET_KEY: ResourceKey<EquipmentAsset> = ResourceKey.create(EquipmentAssets.ROOT_ID, Id("hotspot_glasses"))
+
+    val HOTSPOT_GLASSES = CreateItem(
+        Id("hotspot_glasses"),
+        Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
+                .setEquipSound(SoundEvents.ARMOR_EQUIP_GENERIC)
+                .setAsset(HOTSPOT_GLASSES_EQUIPMENT_ASSET_KEY)
+                .setDamageOnHurt(false)
+                // This technically lets you equip it onto any mob but we don't seem to have access to tags at this
+                // time and besides there doesn't even seem to be a tag for mobs that can display armour that's been
+                // equipped because mojank. Also, it's funny I guess. We could make a manual list as part of a
+                // .setAllowedEntities() but then the list would have to be updated whenever a new mob that can equip
+                // armour gets added.
+                .setEquipOnInteract(true)
+                .setCanBeSheared(true)
+                .setShearingSound(SoundEvents.ARMOR_EQUIP_GENERIC)
+                .build())
+    )
+
+    // =========================================================================
     //  Farming and Crops
     // =========================================================================
     var GRAPE_SEEDS = CreateItem(
@@ -348,6 +374,8 @@ object NguhItems {
         G.generateTrimmableItem(AMETHYST_LEGGINGS, AMETHYST_EQUIPMENT_ASSET_KEY, ItemModelGenerators.TRIM_PREFIX_LEGGINGS, false)
         G.generateTrimmableItem(AMETHYST_BOOTS, AMETHYST_EQUIPMENT_ASSET_KEY, ItemModelGenerators.TRIM_PREFIX_BOOTS, false)
 
+        Register(HOTSPOT_GLASSES)
+
         Register(GRAPES)
         Register(GRAPE_LEAF)
         Register(GRAPE_JUICE)
@@ -386,6 +414,10 @@ object NguhItems {
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register {
             it.accept(NGUHROVISION_2024_DISC)
+        }
+
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT).register {
+            it.accept(HOTSPOT_GLASSES)
         }
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register {

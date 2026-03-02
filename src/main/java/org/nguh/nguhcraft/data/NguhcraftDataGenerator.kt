@@ -211,6 +211,8 @@ class NguhcraftItemTagProvider(
         valueLookupBuilder(ItemTags.AXES).add(NguhItems.AMETHYST_AXE)
         valueLookupBuilder(ItemTags.HOES).add(NguhItems.AMETHYST_HOE)
 
+        valueLookupBuilder(ItemTags.HEAD_ARMOR).add(NguhItems.HOTSPOT_GLASSES)
+
         valueLookupBuilder(ItemTags.LOGS_THAT_BURN)
             .add(NguhBlocks.TINTED_OAK_LOG.asItem())
             .add(NguhBlocks.TINTED_OAK_WOOD.asItem())

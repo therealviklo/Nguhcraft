@@ -90,6 +90,13 @@ class NguhcraftRecipeGenerator(
             cinput('r', Items.REDSTONE)
         }
 
+        offerShaped(NguhItems.HOTSPOT_GLASSES, 1) {
+            pattern("s s")
+            pattern("psp")
+            cinput('s', Items.STICK)
+            cinput('p', Items.RED_STAINED_GLASS_PANE)
+        }
+
         // =========================================================================
         // Vanilla Block Decompositions
         // =========================================================================
