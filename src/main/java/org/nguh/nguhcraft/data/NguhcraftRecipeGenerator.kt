@@ -99,6 +99,14 @@ class NguhcraftRecipeGenerator(
 
         offerShapelessRecipe(NguhItems.HOTSPOT_SAUCE, 1, NguhItems.HOTSPOT_GLASSES to 1, Items.BOWL to 1, Items.LAVA_BUCKET to 1, Items.BLAZE_POWDER to 1)
 
+        offerShaped(NguhItems.EARPIECE, 1) {
+            pattern("n ")
+            pattern("sw")
+            cinput('n', Items.NOTE_BLOCK)
+            cinput('s', Items.STICK)
+            cinput('w', ItemTags.WOOL)
+        }
+
         // =========================================================================
         // Vanilla Block Decompositions
         // =========================================================================
@@ -589,9 +597,20 @@ class NguhcraftRecipeGenerator(
 
     // Combines a call to input() and criterion() because having to specify the latter
     // all the time is just really stupid.
-    fun ShapedRecipeBuilder.cinput(C: Char, I: ItemLike): ShapedRecipeBuilder {
-        define(C, I)
-        unlockedBy("has_${getItemName(I)}", has(I))
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T> ShapedRecipeBuilder.cinput(C: Char, I: T): ShapedRecipeBuilder {
+        when (I) {
+            is ItemLike -> define(C, I)
+            is TagKey<*> -> define(C, I as TagKey<Item>)
+            else -> throw IllegalArgumentException("Invalid input type: ${I::class.simpleName}")
+        }
+        when (I) {
+            is ItemLike ->
+                unlockedBy("has_${getItemName(I)}", has(I))
+            is TagKey<*> ->
+                unlockedBy("has_${I.location.path}", has(I as TagKey<Item>))
+            else -> throw IllegalArgumentException("Invalid input type: ${I::class.simpleName}")
+        }
         return this
     }
 
