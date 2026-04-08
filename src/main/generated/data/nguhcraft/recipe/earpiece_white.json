@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "n": "minecraft:note_block",
+    "s": "minecraft:stick",
+    "w": "minecraft:white_wool"
+  },
+  "pattern": [
+    "n ",
+    "sw"
+  ],
+  "result": {
+    "count": 1,
+    "id": "nguhcraft:earpiece_white"
+  }
+}

@@ -99,22 +99,45 @@ class NguhcraftRecipeGenerator(
 
         offerShapelessRecipe(NguhItems.HOTSPOT_SAUCE, 1, NguhItems.HOTSPOT_GLASSES to 1, Items.BOWL to 1, Items.LAVA_BUCKET to 1, Items.BLAZE_POWDER to 1)
 
-        offerShaped(NguhItems.EARPIECE, 1) {
-            pattern("n ")
-            pattern("sw")
-            cinput('n', Items.NOTE_BLOCK)
-            cinput('s', Items.STICK)
-            cinput('w', ItemTags.WOOL)
-        }
+        // =========================================================================
+        //  Earpieces
+        // =========================================================================
+        offerEarpiece(NguhItems.EARPIECES.getValue("white"), Items.WHITE_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("light_gray"), Items.LIGHT_GRAY_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("gray"), Items.GRAY_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("black"), Items.BLACK_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("brown"), Items.BROWN_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("red"), Items.RED_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("orange"), Items.ORANGE_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("yellow"), Items.YELLOW_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("lime"), Items.LIME_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("green"), Items.GREEN_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("cyan"), Items.CYAN_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("light_blue"), Items.LIGHT_BLUE_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("blue"), Items.BLUE_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("purple"), Items.PURPLE_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("magenta"), Items.MAGENTA_WOOL)
+        offerEarpiece(NguhItems.EARPIECES.getValue("pink"), Items.PINK_WOOL)
 
-        offerShaped(NguhItems.HEADSET, 1) {
-            pattern("sss")
-            pattern("n n")
-            pattern("sw ")
-            cinput('n', Items.NOTE_BLOCK)
-            cinput('s', Items.STICK)
-            cinput('w', ItemTags.WOOL)
-        }
+        // =========================================================================
+        //  Headsets
+        // =========================================================================
+        offerHeadset(NguhItems.HEADSETS.getValue("white"), Items.WHITE_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("light_gray"), Items.LIGHT_GRAY_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("gray"), Items.GRAY_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("black"), Items.BLACK_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("brown"), Items.BROWN_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("red"), Items.RED_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("orange"), Items.ORANGE_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("yellow"), Items.YELLOW_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("lime"), Items.LIME_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("green"), Items.GREEN_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("cyan"), Items.CYAN_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("light_blue"), Items.LIGHT_BLUE_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("blue"), Items.BLUE_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("purple"), Items.PURPLE_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("magenta"), Items.MAGENTA_WOOL)
+        offerHeadset(NguhItems.HEADSETS.getValue("pink"), Items.PINK_WOOL)
 
         // =========================================================================
         // Vanilla Block Decompositions
@@ -548,6 +571,29 @@ class NguhcraftRecipeGenerator(
         SpecialRecipeBuilder.special(::KeyDuplicationRecipe).save(E, "key_duplication")
     }
 
+    /** Add a recipe for an earpiece item. */
+    fun offerEarpiece(I: Item, Wool: Item) {
+        offerShaped(I, 1) {
+            pattern("n ")
+            pattern("sw")
+            cinput('n', Items.NOTE_BLOCK)
+            cinput('s', Items.STICK)
+            cinput('w', Wool)
+        }
+    }
+
+    /** Add a recipe for an earpiece item. */
+    fun offerHeadset(I: Item, Wool: Item) {
+        offerShaped(I, 1) {
+            pattern("sss")
+            pattern("n n")
+            pattern("sw ")
+            cinput('n', Items.NOTE_BLOCK)
+            cinput('s', Items.STICK)
+            cinput('w', Wool)
+        }
+    }
+
     /** Add a recipe for a brocade block. */
     fun offerBrocade(B: Block, Wool: Block) {
         offerShaped(B, 4) {
@@ -606,20 +652,9 @@ class NguhcraftRecipeGenerator(
 
     // Combines a call to input() and criterion() because having to specify the latter
     // all the time is just really stupid.
-    @Suppress("UNCHECKED_CAST")
-    inline fun <reified T> ShapedRecipeBuilder.cinput(C: Char, I: T): ShapedRecipeBuilder {
-        when (I) {
-            is ItemLike -> define(C, I)
-            is TagKey<*> -> define(C, I as TagKey<Item>)
-            else -> throw IllegalArgumentException("Invalid input type: ${I::class.simpleName}")
-        }
-        when (I) {
-            is ItemLike ->
-                unlockedBy("has_${getItemName(I)}", has(I))
-            is TagKey<*> ->
-                unlockedBy("has_${I.location.path}", has(I as TagKey<Item>))
-            else -> throw IllegalArgumentException("Invalid input type: ${I::class.simpleName}")
-        }
+    fun ShapedRecipeBuilder.cinput(C: Char, I: ItemLike): ShapedRecipeBuilder {
+        define(C, I)
+        unlockedBy("has_${getItemName(I)}", has(I))
         return this
     }
 

@@ -33,6 +33,7 @@ import net.minecraft.world.item.equipment.*
 import net.minecraft.world.item.equipment.trim.TrimPattern
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
+import org.nguh.nguhcraft.Constants
 import org.nguh.nguhcraft.Nguhcraft.Companion.Id
 import org.nguh.nguhcraft.Nguhcraft.Companion.RKey
 import org.nguh.nguhcraft.Utils
@@ -246,36 +247,24 @@ object NguhItems {
     )
 
     // =========================================================================
-    // Earpiece
+    // Earpieces
     // =========================================================================
-    val EARPIECE_EQUIPMENT_ASSET_KEY: ResourceKey<EquipmentAsset> = ResourceKey.create(EquipmentAssets.ROOT_ID, Id("earpiece"))
-
-    val EARPIECE = CreateItem(
-        Id("earpiece"),
-        Item.Properties()
-            .stacksTo(1)
-            .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
-                .setEquipSound(SoundEvents.ARMOR_EQUIP_GENERIC)
-                .setAsset(EARPIECE_EQUIPMENT_ASSET_KEY)
-                .setDamageOnHurt(false)
-                .build())
-    )
+    val EARPIECE_EQUIPMENT_ASSET_KEYS = Constants.colours.associateWith {
+        ResourceKey.create(EquipmentAssets.ROOT_ID, Id("earpiece_${it}"))
+    }
+    val EARPIECES = Constants.colours.associateWith {
+        CreateEarpiece(it, EARPIECE_EQUIPMENT_ASSET_KEYS.getValue(it))
+    }
 
     // =========================================================================
-    // Earpiece
+    // Headsets
     // =========================================================================
-    val HEADSET_EQUIPMENT_ASSET_KEY: ResourceKey<EquipmentAsset> = ResourceKey.create(EquipmentAssets.ROOT_ID, Id("headset"))
-
-    val HEADSET = CreateItem(
-        Id("headset"),
-        Item.Properties()
-            .stacksTo(1)
-            .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
-                .setEquipSound(SoundEvents.ARMOR_EQUIP_GENERIC)
-                .setAsset(HEADSET_EQUIPMENT_ASSET_KEY)
-                .setDamageOnHurt(false)
-                .build())
-    )
+    val HEADSET_EQUIPMENT_ASSET_KEYS = Constants.colours.associateWith {
+        ResourceKey.create(EquipmentAssets.ROOT_ID, Id("headset_${it}"))
+    }
+    val HEADSETS = Constants.colours.associateWith {
+        CreateHeadset(it, HEADSET_EQUIPMENT_ASSET_KEYS.getValue(it))
+    }
 
     // =========================================================================
     //  Farming and Crops
@@ -431,8 +420,10 @@ object NguhItems {
 
         Register(HOTSPOT_GLASSES)
         Register(HOTSPOT_SAUCE)
-        Register(EARPIECE)
-        Register(HEADSET)
+        for ((_, earpiece) in EARPIECES)
+            Register(earpiece)
+        for ((_, headset) in HEADSETS)
+            Register(headset)
 
         Register(GRAPES)
         Register(GRAPE_LEAF)
@@ -476,8 +467,10 @@ object NguhItems {
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT).register {
             it.accept(HOTSPOT_GLASSES)
-            it.accept(EARPIECE)
-            it.accept(HEADSET)
+            for ((_, earpiece) in EARPIECES)
+                it.accept(earpiece)
+            for ((_, headset) in HEADSETS)
+                it.accept(headset)
         }
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register {
@@ -540,6 +533,32 @@ object NguhItems {
             BuiltInRegistries.ITEM,
             Id,
             SmithingTemplateItem.createArmorTrimTemplate(I.setId(Key(Id)))
+        )
+    }
+
+    private fun CreateEarpiece(ColourName: String, AssetKey: ResourceKey<EquipmentAsset>): Item {
+        return CreateItem(
+            Id("earpiece_${ColourName}"),
+            Item.Properties()
+                .stacksTo(1)
+                .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
+                    .setEquipSound(SoundEvents.ARMOR_EQUIP_GENERIC)
+                    .setAsset(AssetKey)
+                    .setDamageOnHurt(false)
+                    .build())
+        )
+    }
+
+    private fun CreateHeadset(ColourName: String, AssetKey: ResourceKey<EquipmentAsset>): Item {
+        return CreateItem(
+            Id("headset_${ColourName}"),
+            Item.Properties()
+                .stacksTo(1)
+                .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
+                    .setEquipSound(SoundEvents.ARMOR_EQUIP_GENERIC)
+                    .setAsset(AssetKey)
+                    .setDamageOnHurt(false)
+                    .build())
         )
     }
 

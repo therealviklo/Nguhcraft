@@ -42,6 +42,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
+import org.nguh.nguhcraft.Constants
 import org.nguh.nguhcraft.NguhDamageTypes
 import org.nguh.nguhcraft.NguhPaintings
 import org.nguh.nguhcraft.Nguhcraft.Companion.Id
@@ -176,6 +177,20 @@ class NguhcraftEquipmentAssetProvider(
             NguhItems.AMETHYST_EQUIPMENT_ASSET_KEY,
             EquipmentClientInfo.builder().addHumanoidLayers(Id("amethyst")).build()
         )
+        Add(
+            NguhItems.HOTSPOT_GLASSES_EQUIPMENT_ASSET_KEY,
+            EquipmentClientInfo.builder().addHumanoidLayers(Id("hotspot_glasses")).build()
+        )
+        for (colour in Constants.colours) {
+            Add(
+                NguhItems.EARPIECE_EQUIPMENT_ASSET_KEYS.getValue(colour),
+                EquipmentClientInfo.builder().addHumanoidLayers(Id("earpiece_${colour}")).build()
+            )
+            Add(
+                NguhItems.HEADSET_EQUIPMENT_ASSET_KEYS.getValue(colour),
+                EquipmentClientInfo.builder().addHumanoidLayers(Id("headset_${colour}")).build()
+            )
+        }
     }
 
     override fun run(W: CachedOutput): CompletableFuture<*> {
