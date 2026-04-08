@@ -7,6 +7,7 @@ import net.minecraft.client.data.models.ItemModelGenerators
 import net.minecraft.client.data.models.model.ModelTemplate
 import net.minecraft.client.data.models.model.ModelTemplates
 import net.minecraft.core.Holder
+import net.minecraft.core.HolderGetter
 import net.minecraft.core.Registry
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
@@ -19,7 +20,7 @@ import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.tags.TagKey
 import net.minecraft.world.effect.MobEffectInstance
-import net.minecraft.world.effect.MobEffects
+import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.food.Foods
@@ -38,6 +39,7 @@ import org.nguh.nguhcraft.Utils
 import org.nguh.nguhcraft.block.ChestVariant
 import org.nguh.nguhcraft.block.NguhBlocks
 import org.nguh.nguhcraft.entity.NguhEffects
+import org.nguh.nguhcraft.tags.NguhTags
 import java.util.*
 
 object NguhItems {
@@ -204,6 +206,9 @@ object NguhItems {
     // =========================================================================
     val HOTSPOT_GLASSES_EQUIPMENT_ASSET_KEY: ResourceKey<EquipmentAsset> = ResourceKey.create(EquipmentAssets.ROOT_ID, Id("hotspot_glasses"))
 
+    private val holderGetter: HolderGetter<EntityType<*>?> =
+        BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.ENTITY_TYPE)
+
     val HOTSPOT_GLASSES = CreateItem(
         Id("hotspot_glasses"),
         Item.Properties()
@@ -212,12 +217,10 @@ object NguhItems {
                 .setEquipSound(SoundEvents.ARMOR_EQUIP_GENERIC)
                 .setAsset(HOTSPOT_GLASSES_EQUIPMENT_ASSET_KEY)
                 .setDamageOnHurt(false)
-                // This technically lets you equip it onto any mob but we don't seem to have access to tags at this
-                // time and besides there doesn't even seem to be a tag for mobs that can display armour that's been
-                // equipped because mojank. Also, it's funny I guess. We could make a manual list as part of a
-                // .setAllowedEntities() but then the list would have to be updated whenever a new mob that can equip
-                // armour gets added.
+                // Can equip by right-clicking
                 .setEquipOnInteract(true)
+                // Can only equip onto mobs with the tag nguhcraft:can_equip_hotspot_glasses
+                .setAllowedEntities(holderGetter.getOrThrow(NguhTags.CAN_EQUIP_HOTSPOT_GLASSES as TagKey<EntityType<*>?>))
                 .setCanBeSheared(true)
                 .setShearingSound(SoundEvents.ARMOR_EQUIP_GENERIC)
                 .build())
