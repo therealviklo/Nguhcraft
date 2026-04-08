@@ -97,6 +97,8 @@ class NguhcraftRecipeGenerator(
             cinput('p', Items.RED_STAINED_GLASS_PANE)
         }
 
+        offerShapelessRecipe(NguhItems.HOTSPOT_SAUCE, 1, NguhItems.HOTSPOT_GLASSES to 1, Items.BOWL to 1, Items.LAVA_BUCKET to 1, Items.BLAZE_POWDER to 1)
+
         // =========================================================================
         // Vanilla Block Decompositions
         // =========================================================================

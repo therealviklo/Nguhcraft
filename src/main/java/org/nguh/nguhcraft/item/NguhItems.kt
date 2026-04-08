@@ -18,17 +18,17 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.tags.TagKey
+import net.minecraft.world.effect.MobEffectInstance
+import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.food.FoodProperties
+import net.minecraft.world.food.Foods
 import net.minecraft.world.item.*
 import net.minecraft.world.item.component.Consumable
 import net.minecraft.world.item.component.Consumables
+import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect
 import net.minecraft.world.item.crafting.CustomRecipe.Serializer
-import net.minecraft.world.item.equipment.ArmorMaterial
-import net.minecraft.world.item.equipment.ArmorType
-import net.minecraft.world.item.equipment.EquipmentAsset
-import net.minecraft.world.item.equipment.EquipmentAssets
-import net.minecraft.world.item.equipment.Equippable
+import net.minecraft.world.item.equipment.*
 import net.minecraft.world.item.equipment.trim.TrimPattern
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
@@ -37,6 +37,7 @@ import org.nguh.nguhcraft.Nguhcraft.Companion.RKey
 import org.nguh.nguhcraft.Utils
 import org.nguh.nguhcraft.block.ChestVariant
 import org.nguh.nguhcraft.block.NguhBlocks
+import org.nguh.nguhcraft.entity.NguhEffects
 import java.util.*
 
 object NguhItems {
@@ -223,6 +224,23 @@ object NguhItems {
     )
 
     // =========================================================================
+    // Hotspot Sauce
+    // =========================================================================
+    val HOTSPOT_SAUCE = CreateItem(
+        Id("hotspot_sauce"),
+        Item.Properties()
+            .stacksTo(1)
+            .food(Foods.SUSPICIOUS_STEW)
+            .component(DataComponents.CONSUMABLE, Consumable.builder()
+                .animation(ItemUseAnimation.DRINK)
+                .sound(SoundEvents.GENERIC_DRINK)
+                .onConsume(ApplyStatusEffectsConsumeEffect(MobEffectInstance(NguhEffects.FIRE_BREATHING, 200, 0)))
+                .build())
+			.usingConvertsTo(Items.BOWL)
+            .craftRemainder(Items.BOWL)
+    )
+
+    // =========================================================================
     //  Farming and Crops
     // =========================================================================
     var GRAPE_SEEDS = CreateItem(
@@ -375,6 +393,7 @@ object NguhItems {
         G.generateTrimmableItem(AMETHYST_BOOTS, AMETHYST_EQUIPMENT_ASSET_KEY, ItemModelGenerators.TRIM_PREFIX_BOOTS, false)
 
         Register(HOTSPOT_GLASSES)
+        Register(HOTSPOT_SAUCE)
 
         Register(GRAPES)
         Register(GRAPE_LEAF)
@@ -443,6 +462,7 @@ object NguhItems {
             it.accept(DUBIOUS_STEW)
             it.accept(CHOCOLATE)
             it.accept(GLOW_ROLLS)
+            it.accept(HOTSPOT_SAUCE)
         }
 
         KeyLockPairingRecipe.SERIALISER = Registry.register(
