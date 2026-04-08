@@ -246,6 +246,22 @@ object NguhItems {
     )
 
     // =========================================================================
+    // Earpiece
+    // =========================================================================
+    val EARPIECE_EQUIPMENT_ASSET_KEY: ResourceKey<EquipmentAsset> = ResourceKey.create(EquipmentAssets.ROOT_ID, Id("earpiece"))
+
+    val EARPIECE = CreateItem(
+        Id("earpiece"),
+        Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD)
+                .setEquipSound(SoundEvents.ARMOR_EQUIP_GENERIC)
+                .setAsset(EARPIECE_EQUIPMENT_ASSET_KEY)
+                .setDamageOnHurt(false)
+                .build())
+    )
+
+    // =========================================================================
     //  Farming and Crops
     // =========================================================================
     var GRAPE_SEEDS = CreateItem(
@@ -399,6 +415,7 @@ object NguhItems {
 
         Register(HOTSPOT_GLASSES)
         Register(HOTSPOT_SAUCE)
+        Register(EARPIECE)
 
         Register(GRAPES)
         Register(GRAPE_LEAF)
@@ -442,6 +459,7 @@ object NguhItems {
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT).register {
             it.accept(HOTSPOT_GLASSES)
+            it.accept(EARPIECE)
         }
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register {
