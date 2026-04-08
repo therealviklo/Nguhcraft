@@ -107,6 +107,15 @@ class NguhcraftRecipeGenerator(
             cinput('w', ItemTags.WOOL)
         }
 
+        offerShaped(NguhItems.HEADSET, 1) {
+            pattern("sss")
+            pattern("n n")
+            pattern("sw ")
+            cinput('n', Items.NOTE_BLOCK)
+            cinput('s', Items.STICK)
+            cinput('w', ItemTags.WOOL)
+        }
+
         // =========================================================================
         // Vanilla Block Decompositions
         // =========================================================================
