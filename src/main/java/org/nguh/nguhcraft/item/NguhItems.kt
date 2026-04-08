@@ -219,7 +219,9 @@ object NguhItems {
                 .setDamageOnHurt(false)
                 // Can equip by right-clicking
                 .setEquipOnInteract(true)
-                // Can only equip onto mobs with the tag nguhcraft:can_equip_hotspot_glasses
+                // Can only equip onto mobs with the tag nguhcraft:can_equip_hotspot_glasses. One would think that there
+                // would be a tag for "mobs that actually render armour that they have equipped" but Mojank has not
+                // provided one.
                 .setAllowedEntities(holderGetter.getOrThrow(NguhTags.CAN_EQUIP_HOTSPOT_GLASSES as TagKey<EntityType<*>?>))
                 .setCanBeSheared(true)
                 .setShearingSound(SoundEvents.ARMOR_EQUIP_GENERIC)
