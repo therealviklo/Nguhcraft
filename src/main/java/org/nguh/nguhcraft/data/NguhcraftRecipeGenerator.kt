@@ -582,7 +582,7 @@ class NguhcraftRecipeGenerator(
         }
     }
 
-    /** Add a recipe for an earpiece item. */
+    /** Add a recipe for an headset item. */
     fun offerHeadset(I: Item, Wool: Item) {
         offerShaped(I, 1) {
             pattern("sss")
