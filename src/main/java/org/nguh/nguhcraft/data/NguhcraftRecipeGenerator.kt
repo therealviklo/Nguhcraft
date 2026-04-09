@@ -579,6 +579,7 @@ class NguhcraftRecipeGenerator(
             cinput('n', Items.NOTE_BLOCK)
             cinput('s', Items.STICK)
             cinput('w', Wool)
+            group("earpiece")
         }
     }
 
@@ -591,6 +592,7 @@ class NguhcraftRecipeGenerator(
             cinput('n', Items.NOTE_BLOCK)
             cinput('s', Items.STICK)
             cinput('w', Wool)
+            group("headset")
         }
     }
 

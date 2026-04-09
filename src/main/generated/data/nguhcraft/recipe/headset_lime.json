@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "headset",
   "key": {
     "n": "minecraft:note_block",
     "s": "minecraft:stick",
